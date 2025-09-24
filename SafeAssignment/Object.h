@@ -1,8 +1,6 @@
 #pragma once
 
-#include <iostream>
 #include <vector>
-#include <functional>
 
 #include "ObjectHandleTable.h"
 #include "Delegate.h"
@@ -11,7 +9,7 @@
 class Object
 {
 private:
-	// 소멸할 때 호출할 함수들을 담는 벡터.
+	// 소멸할 때 호출할 함수들을 담는 Delegate.
 	Delegate<> m_onDestroyCallbacks;
 	ObjectHandle m_handle;
 	bool m_isDestroyed = false;
@@ -39,7 +37,7 @@ protected:
 		out = ptr;
 
 		// 람다 캡쳐로 out 과 ptr 을 넘겨줌.
-		// out 은 참조로 받아서 이 콜백이 호출되는 순간의 at 값을 씀.
+		// out 은 참조로 받아서 이 콜백이 호출되는 순간의 out 값을 씀.
 		// ptr은 값으로 받아서 이 람다가 생성되는 순간의 ptr 값을 씀.
 
 		ptr->m_onDestroyCallbacks.Add(this, [&out, ptr]()

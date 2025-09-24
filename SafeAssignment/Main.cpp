@@ -1,9 +1,4 @@
 #include <iostream>
-#include <vector>
-#include <functional>
-#include <algorithm>
-#include <queue>
-#include <cassert>
 
 #include "Object.h"
 
@@ -53,8 +48,6 @@ public:
 		}
 	}
 };
-
-
 
 int main()
 {
