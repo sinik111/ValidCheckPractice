@@ -22,7 +22,7 @@ public:
 	template<typename T>
 	void Add(T* instance, void (T::*memberFunc)(Args...))
 	{
-		static_assert(std::is_base_of<Object, T>());
+		static_assert(std::is_base_of_v<Object, T>);
 
 		m_callbackInfos.emplace_back(
 			instance->m_handle,
@@ -36,7 +36,7 @@ public:
 	template<typename T>
 	void Add(T* instance, std::function<void(Args...)> func)
 	{
-		static_assert(std::is_base_of<Object, T>());
+		static_assert(std::is_base_of_v<Object, T>);
 
 		m_callbackInfos.emplace_back(CallbackInfo{ instance->m_handle, func });
 	}
