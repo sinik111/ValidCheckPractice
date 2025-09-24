@@ -24,7 +24,7 @@ struct ObjectHandle
 	}
 };
 
-class ObjectHandleTable
+class ObjectHandleTable // TODO: ObjectHandleTable 말고 다른 이름이 맞나?
 {
 	using flag = char;
 	enum ValidFlag

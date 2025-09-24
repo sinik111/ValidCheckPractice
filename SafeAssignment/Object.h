@@ -56,10 +56,9 @@ protected:
 		);
 	}
 
+private:
 	void CallOnDestroy();
 
-	// 함수에서 직접 벡터에 접근할 수 있게 friend 선언.
-	template<typename T>
 	friend class ObjectManager;
 	friend class ObjectHandleTable;
 	friend class Delegate<>;
