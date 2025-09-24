@@ -13,11 +13,6 @@ Object::~Object()
 	ObjectHandleTable::Get().UnregisterObject(this);
 }
 
-void Object::DoSomething()
-{
-	std::cout << "DoSomething" << std::endl;
-}
-
 void Object::CallOnDestroy()
 {
 	m_onDestroyCallbacks.Invoke();

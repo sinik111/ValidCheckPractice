@@ -59,9 +59,10 @@ public:
 int main()
 {
 	Player* player = new Player();
-	Enemy* enemy = new Enemy();
+	Enemy* enemy1 = new Enemy();
+	Enemy* enemy2 = new Enemy();
 
-	player->SetTarget(enemy);
+	player->SetTarget(enemy1);
 
 	while (true)
 	{
@@ -77,14 +78,36 @@ int main()
 		{
 			break;
 		}
-
-		if (enemy != nullptr && enemy->GetHp() == 0)
+		else if (command == 3)
 		{
-			delete enemy;
-			enemy = nullptr;
+			std::cout << "Player destroyed" << std::endl;
+			delete player;
+			player = nullptr;
+		}
+		else if (command == 4)
+		{
+			enemy1->TakeDamage(2);
+		}
+		else if (command == 5)
+		{
+			player->SetTarget(enemy2);
+		}
+
+		if (enemy1 != nullptr && enemy1->GetHp() == 0)
+		{
+			std::cout << "Enemy1 destroyed" << std::endl;
+			delete enemy1;
+			enemy1 = nullptr;
+		}
+		if (enemy2 != nullptr && enemy2->GetHp() == 0)
+		{
+			std::cout << "Enemy2 destroyed" << std::endl;
+			delete enemy2;
+			enemy2 = nullptr;
 		}
 	}
 
-	delete enemy;
+	delete enemy2;
+	delete enemy1;
 	delete player;
 }

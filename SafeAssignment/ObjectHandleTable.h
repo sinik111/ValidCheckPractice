@@ -16,12 +16,25 @@ struct ObjectHandle
 	{
 		return index == other.index && generation == other.generation;
 	}
+
+	void Reset()
+	{
+		index = 0;
+		generation = 0;
+	}
 };
 
 class ObjectHandleTable
 {
+	using flag = char;
+	enum ValidFlag
+	{
+		INVALID = 0,
+		VALID	= 1
+	};
+
 private:
-	std::vector<Object*> m_objects;
+	std::vector<flag> m_validFlags;
 	std::vector<unsigned> m_generations;
 	std::queue<unsigned> m_freeIndexes;
 

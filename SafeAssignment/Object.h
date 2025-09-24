@@ -20,9 +20,6 @@ public:
 	Object();
 	virtual ~Object();
 
-public:
-	void DoSomething();
-
 protected:
 	template<typename T>
 	void SafeAssign(T*& out, T* ptr)
