@@ -1,102 +1,90 @@
 #include <iostream>
 #include <vector>
 #include <functional>
+#include <algorithm>
+#include <queue>
+#include <cassert>
 
-class Object;
+#include "Object.h"
 
-void SafeAssignment(Object*& at, Object* ptr);
-
-class Object
+class Enemy :
+	public Object
 {
 private:
-	std::vector<std::function<void()>> m_onDestroyCallbacks;
+	int m_hp = 10;
 
 public:
-	~Object()
+	void TakeDamage(int damage)
 	{
-		callOnDestroy();
+		m_hp -= damage;
+
+		m_hp = std::max(m_hp, 0);
+
+		std::cout << "Enemy TakeDamage Current Hp :" << m_hp << std::endl;
 	}
 
-public:
-	void DoSomething()
+	int GetHp() const
 	{
-		std::cout << "DoSomething" << std::endl;
+		return m_hp;
 	}
-
-private:
-	void callOnDestroy()
-	{
-		for (const auto& func : m_onDestroyCallbacks)
-		{
-			func();
-		}
-	}
-
-	friend void SafeAssignment(Object*& at, Object* ptr);
 };
 
-void SafeAssignment(Object*& at, Object* ptr)
+class Player :
+	public Object
 {
-	if (ptr == nullptr)
+private:
+	Enemy* m_target = nullptr;
+
+public:
+	void SetTarget(Enemy* target)
 	{
-		return;
+		SafeAssign(m_target, target);
 	}
 
-	at = ptr;
-
-	ptr->m_onDestroyCallbacks.push_back([&at, ptr]()
+	void Attack()
+	{
+		if (m_target != nullptr)
 		{
-			if (at == ptr)
-			{
-				at = nullptr;
-			}
+			m_target->TakeDamage(2);
 		}
-	);
-}
+		else
+		{
+			std::cout << "Target is nullptr" << std::endl;
+		}
+	}
+};
+
+
 
 int main()
 {
-	Object* a = new Object;
+	Player* player = new Player();
+	Enemy* enemy = new Enemy();
 
-	Object* b = nullptr;
+	player->SetTarget(enemy);
 
-	SafeAssignment(b, a);
-
-	b->DoSomething();
-
-	delete a;
-
-	if (b == nullptr)
+	while (true)
 	{
-		std::cout << "b is not valid" << std::endl;
-	}
-	else
-	{
-		std::cout << "b is valid" << std::endl;
-	}
+		int command = 0;
 
-	Object* c = new Object;
+		std::cin >> command;
 
-	Object* d = nullptr;
+		if (command == 1)
+		{
+			player->Attack();
+		}
+		else if (command == 2)
+		{
+			break;
+		}
 
-	Object* e = new Object;
-
-	SafeAssignment(d, c);
-
-	d->DoSomething();
-
-	SafeAssignment(d, e);
-
-	delete c;
-
-	if (d == nullptr)
-	{
-		std::cout << "d is not valid" << std::endl;
-	}
-	else
-	{
-		std::cout << "d is valid" << std::endl;
+		if (enemy != nullptr && enemy->GetHp() == 0)
+		{
+			delete enemy;
+			enemy = nullptr;
+		}
 	}
 
-	delete e;
+	delete enemy;
+	delete player;
 }
