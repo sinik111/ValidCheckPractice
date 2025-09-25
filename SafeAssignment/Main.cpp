@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory>
 
 #include "Object.h"
 
@@ -51,11 +52,11 @@ public:
 
 int main()
 {
-	Player* player = new Player();
-	Enemy* enemy1 = new Enemy();
-	Enemy* enemy2 = new Enemy();
+	std::unique_ptr<Player> player = std::make_unique<Player>();
+	std::unique_ptr<Enemy> enemy1 = std::make_unique<Enemy>();
+	std::unique_ptr<Enemy> enemy2 = std::make_unique<Enemy>();
 
-	player->SetTarget(enemy1);
+	player->SetTarget(enemy1.get());
 
 	while (true)
 	{
@@ -74,8 +75,8 @@ int main()
 		else if (command == 3)
 		{
 			std::cout << "Player destroyed" << std::endl;
-			delete player;
-			player = nullptr;
+			
+			player.reset();
 		}
 		else if (command == 4)
 		{
@@ -83,24 +84,18 @@ int main()
 		}
 		else if (command == 5)
 		{
-			player->SetTarget(enemy2);
+			player->SetTarget(enemy2.get());
 		}
 
 		if (enemy1 != nullptr && enemy1->GetHp() == 0)
 		{
 			std::cout << "Enemy1 destroyed" << std::endl;
-			delete enemy1;
-			enemy1 = nullptr;
+			enemy1.reset();
 		}
 		if (enemy2 != nullptr && enemy2->GetHp() == 0)
 		{
 			std::cout << "Enemy2 destroyed" << std::endl;
-			delete enemy2;
-			enemy2 = nullptr;
+			enemy2.reset();
 		}
 	}
-
-	delete enemy2;
-	delete enemy1;
-	delete player;
 }

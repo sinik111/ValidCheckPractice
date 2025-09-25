@@ -12,7 +12,6 @@ private:
 	// 소멸할 때 호출할 함수들을 담는 Delegate.
 	Delegate<> m_onDestroyCallbacks;
 	ObjectHandle m_handle;
-	bool m_isDestroyed = false;
 
 public:
 	Object();

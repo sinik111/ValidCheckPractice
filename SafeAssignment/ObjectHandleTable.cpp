@@ -16,9 +16,6 @@ ObjectHandleTable& ObjectHandleTable::Get()
 
 void ObjectHandleTable::RegisterObject(Object* object)
 {
-	// 이미 등록된 오브젝트를 또 등록 불가
-	assert(object->m_handle.index == 0);
-
 	unsigned index = 0;
 
 	if (m_freeIndexes.empty())
@@ -40,9 +37,6 @@ void ObjectHandleTable::RegisterObject(Object* object)
 
 void ObjectHandleTable::UnregisterObject(Object* object)
 {
-	// 등록되지 않은 오브젝트는 해제 불가
-	assert(object->m_handle.index != 0);
-
 	if (IsValid(object->m_handle))
 	{
 		m_validFlags[object->m_handle.index] = INVALID;
@@ -53,7 +47,5 @@ void ObjectHandleTable::UnregisterObject(Object* object)
 
 bool ObjectHandleTable::IsValid(const ObjectHandle& handle) const
 {
-	return handle.index < m_validFlags.size()
-		&& m_validFlags[handle.index]
-		&& m_generations[handle.index] == handle.generation;
+	return m_validFlags[handle.index] && m_generations[handle.index] == handle.generation;
 }
